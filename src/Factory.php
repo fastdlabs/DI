@@ -7,11 +7,10 @@
  * @link      https://www.fastdlabs.com/
  */
 
-namespace FastD\Container;
+namespace FastD\DI;
 
 
-use Closure;
-use Psr\Container\ContainerInterface;
+use FastD\Container\Container;
 use ReflectionClass;
 use ReflectionException;
 
@@ -20,9 +19,12 @@ use ReflectionException;
  *
  * @package FastD\Container
  */
-class Injection implements InjectionInterface
+class Factory
 {
-    protected ContainerInterface $container;
+    /**
+     * @var Container
+     */
+    protected Container $container;
 
     /**
      * @var string
@@ -47,18 +49,18 @@ class Injection implements InjectionInterface
     /**
      * Injection constructor.
      *
-     * @param ContainerInterface $container
+     * @param Container $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
     }
 
     /**
      * @param string $service
-     * @return Injection
+     * @return Factory
      */
-    public function injectClass(string $service): InjectionInterface
+    public function bind(string $service): Factory
     {
         $this->object = $service;
 
@@ -67,18 +69,17 @@ class Injection implements InjectionInterface
         return $this;
     }
 
-    public function injectClosure(Closure $closure) {
+    public function bindClosure(object $service): Factory
+    {
+        $this->object = $service;
 
-    }
-
-    public function injectFunction(object $func) {
-
+        return $this;
     }
 
     /**
-     * @return Injection
+     * @return Factory
      */
-    public function withConstruct(): InjectionInterface
+    public function withConstruct(): Factory
     {
         return $this->withMethod('__construct');
     }
@@ -88,7 +89,7 @@ class Injection implements InjectionInterface
      * @param bool $isStatic
      * @return $this
      */
-    public function withMethod(string $name, bool $isStatic = false): InjectionInterface
+    public function withMethod(string $name, bool $isStatic = false): Factory
     {
         $this->method = $name;
 
@@ -101,7 +102,7 @@ class Injection implements InjectionInterface
      * @param array $arguments
      * @return $this
      */
-    public function withArguments(array $arguments): InjectionInterface
+    public function withArguments(array $arguments): Factory
     {
         $this->arguments = $arguments;
 
@@ -126,11 +127,7 @@ class Injection implements InjectionInterface
     public function make(array $arguments = []): object
     {
         if (empty($this->arguments)) {
-            if (is_callable($this->object)) {
-                $injections = Reflection::detectionClosureArgs($this->object);
-            } else {
-                $injections = Reflection::detectionObjectArgs($this->object, $this->method);
-            }
+            $injections = is_callable($this->object) ? detectionClosureArgs($this->object) : detectionObjectArgs($this->object, $this->method);
 
             foreach ($injections as $injection) {
                 $this->arguments[] = $this->container->get($injection);

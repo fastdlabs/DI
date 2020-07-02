@@ -16,7 +16,10 @@
     "autoload": {
         "psr-4": {
             "FastD\\DI\\": "src"
-        }
+        },
+        "files": [
+            "helpers.php"
+        ]
     },
     "config": {
         "bin-dir": "bin"
