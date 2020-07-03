@@ -121,11 +121,11 @@ class Factory
     }
 
     /**
-     * @param array $arguments
+     * @param $args
      * @return object
      * @throws ReflectionException
      */
-    public function make(array $arguments = []): object
+    public function make(...$arguments): object
     {
         if (empty($this->arguments)) {
             $injections = is_callable($this->object) ? detectionClosureArgs($this->object) : detectionObjectArgs($this->object, $this->method);
@@ -138,7 +138,17 @@ class Factory
         $arguments = array_merge($this->arguments, $arguments);
 
         if (is_callable($this->object)) {
-            return call_user_func_array($this->object, $arguments);
+            return new class($this->object) implements AnonymousInterface{
+                protected Closure $obj;
+                public function __construct(Closure $closure)
+                {
+                    $this->obj = $closure;
+                }
+                public function __invoke(...$args)
+                {
+                    return call_user_func_array($this->obj, $args);
+                }
+            };
         }
 
         if ($this->isStatic) {

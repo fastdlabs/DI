@@ -19,12 +19,8 @@ class FactoryTest extends TestCase
         $container->add('container', $container);
         $factory = new Factory($container);
         $factory->bind(Factory::class);
-        try {
-            $factory = $factory->make();
-            $this->assertInstanceOf(Factory::class, $factory);
-        } catch (Exception $e) {
-
-        }
+        $factory = $factory->make();
+        $this->assertInstanceOf(Factory::class, $factory);
     }
 
     public function testClosure()
@@ -36,7 +32,18 @@ class FactoryTest extends TestCase
             return $container;
         });
         $closure = $factory->make();
-        $container = $closure;
-        $this->assertInstanceOf(Container::class, $container);
+        print_r($closure());
+//        $this->assertInstanceOf(Container::class, $container);
+    }
+
+    public function testArguments()
+    {
+        $container = new Container();
+        $container->add('container', $container);
+        $factory = new Factory($container);
+        $factory->bindClosure(function (Container $container, $name, $age) {
+            return "name: " . $name . ' age: ' . $age;
+        });
+//        $closure = $factory->make('foo', 18);
     }
 }
