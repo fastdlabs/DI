@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fastdlabs/container.git",
-                "reference": "98bee3d12c65cf527912779780e45d3709cfa9bd"
+                "reference": "a652bc5b138098bcdc9b0be2769652f1dc81f0ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fastdlabs/container/zipball/98bee3d12c65cf527912779780e45d3709cfa9bd",
-                "reference": "98bee3d12c65cf527912779780e45d3709cfa9bd",
+                "url": "https://api.github.com/repos/fastdlabs/container/zipball/a652bc5b138098bcdc9b0be2769652f1dc81f0ce",
+                "reference": "a652bc5b138098bcdc9b0be2769652f1dc81f0ce",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -54,7 +54,7 @@
                 "FastD",
                 "container"
             ],
-            "time": "2020-07-02T08:42:39+00:00"
+            "time": "2020-07-02T11:20:17+00:00"
         },
         {
             "name": "psr/container",

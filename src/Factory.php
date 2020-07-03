@@ -10,6 +10,7 @@
 namespace FastD\DI;
 
 
+use Closure;
 use FastD\Container\Container;
 use ReflectionClass;
 use ReflectionException;
@@ -29,7 +30,7 @@ class Factory
     /**
      * @var string
      */
-    protected string $object;
+    protected $object;
 
     /**
      * @var string
@@ -69,7 +70,7 @@ class Factory
         return $this;
     }
 
-    public function bindClosure(object $service): Factory
+    public function bindClosure(Closure $service): Factory
     {
         $this->object = $service;
 

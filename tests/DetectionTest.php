@@ -7,6 +7,7 @@
  * @see      http://www.fastdlabs.com/
  */
 
+use FastD\Container\Container;
 use FastD\DI\Factory;
 use PHPUnit\Framework\TestCase;
 
@@ -15,13 +16,13 @@ class DetectionTest extends TestCase
     public function testDetectionObjectArgs()
     {
         list($obj) = detectionObjectArgs(Factory::class, '__construct');
-        $this->assertEquals(\FastD\Container\Container::class, $obj);
+        $this->assertEquals(Container::class, $obj);
     }
 
     public function testDetectionClosureArgs()
     {
-        $anonymous = function (\FastD\Container\Container $container) {};
+        $anonymous = function (Container $container) {};
         list($obj) = detectionClosureArgs($anonymous);
-        $this->assertEquals(\FastD\Container\Container::class, $obj);
+        $this->assertEquals(Container::class, $obj);
     }
 }
