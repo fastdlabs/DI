@@ -138,17 +138,7 @@ class Factory
         $arguments = array_merge($this->arguments, $arguments);
 
         if (is_callable($this->object)) {
-            return new class($this->object) implements AnonymousInterface{
-                protected Closure $obj;
-                public function __construct(Closure $closure)
-                {
-                    $this->obj = $closure;
-                }
-                public function __invoke(...$args)
-                {
-                    return call_user_func_array($this->obj, $args);
-                }
-            };
+            return new class($this->object, $arguments) extends Anonymous {};
         }
 
         if ($this->isStatic) {

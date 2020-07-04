@@ -31,9 +31,8 @@ class FactoryTest extends TestCase
         $factory->bindClosure(function (Container $container) {
             return $container;
         });
-        $closure = $factory->make();
-        print_r($closure());
-//        $this->assertInstanceOf(Container::class, $container);
+        $closure = $factory->make()();
+        $this->assertInstanceOf(Container::class, $closure);
     }
 
     public function testArguments()
@@ -44,6 +43,8 @@ class FactoryTest extends TestCase
         $factory->bindClosure(function (Container $container, $name, $age) {
             return "name: " . $name . ' age: ' . $age;
         });
-//        $closure = $factory->make('foo', 18);
+        $closure = $factory->make('foo', 18);
+        echo $closure();
+        $this->expectOutputString(sprintf("name: foo age: 18"));
     }
 }
